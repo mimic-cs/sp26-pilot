@@ -1,0 +1,146 @@
+{
+ "method": "payloads translated instruction-by-instruction; every non-control pair accepted by casar.isa_alignment.verify before assembly; x86-64 run natively, AArch64 under qemu-aarch64 6.2; stdout compared byte-exactly and exit codes compared; hub hits/walks from AArch64 stderr. funcptr_miss is the negative test: one corrupted table entry must drive the hub to its fallback (exit 127).",
+ "programs": [
+  {
+   "program": "sumloop",
+   "description": "array sum: loads, immediate arithmetic, cmp/jcc, direct jmp",
+   "payload_instructions": 11,
+   "verified_pairs": 10,
+   "blocks": 4,
+   "hub_sites": 0,
+   "x86": {
+    "exit": 57,
+    "stdout_hex": "3906000000000000"
+   },
+   "arm": {
+    "exit": 57,
+    "stdout_hex": "3906000000000000"
+   },
+   "stdout_equal": true,
+   "exit_code_equal_or_expected": true,
+   "hub": {
+    "hits": null,
+    "hubwalk": null
+   },
+   "status": "OK"
+  },
+  {
+   "program": "isort",
+   "description": "insertion sort in place: nested loops, scaled load/store",
+   "payload_instructions": 26,
+   "verified_pairs": 25,
+   "blocks": 8,
+   "hub_sites": 0,
+   "x86": {
+    "exit": 61,
+    "stdout_hex": "05000000000000005900000000000000fd00000000000000"
+   },
+   "arm": {
+    "exit": 61,
+    "stdout_hex": "05000000000000005900000000000000fd00000000000000"
+   },
+   "stdout_equal": true,
+   "exit_code_equal_or_expected": true,
+   "hub": {
+    "hits": null,
+    "hubwalk": null
+   },
+   "status": "OK"
+  },
+  {
+   "program": "fib",
+   "description": "recursive fib(10): nested calls and returns, explicit frames",
+   "payload_instructions": 21,
+   "verified_pairs": 15,
+   "blocks": 7,
+   "hub_sites": 0,
+   "x86": {
+    "exit": 55,
+    "stdout_hex": "3700000000000000"
+   },
+   "arm": {
+    "exit": 55,
+    "stdout_hex": "3700000000000000"
+   },
+   "stdout_equal": true,
+   "exit_code_equal_or_expected": true,
+   "hub": {
+    "hits": null,
+    "hubwalk": null
+   },
+   "status": "OK"
+  },
+  {
+   "program": "funcptr",
+   "description": "16 indirect calls through a function-pointer table (hub)",
+   "payload_instructions": 22,
+   "verified_pairs": 16,
+   "blocks": 9,
+   "hub_sites": 1,
+   "x86": {
+    "exit": 0,
+    "stdout_hex": "4000000000000000"
+   },
+   "arm": {
+    "exit": 0,
+    "stdout_hex": "4000000000000000"
+   },
+   "stdout_equal": true,
+   "exit_code_equal_or_expected": true,
+   "hub": {
+    "hits": 16,
+    "hubwalk": 24,
+    "walk_avg": 1.5
+   },
+   "status": "OK"
+  },
+  {
+   "program": "switch",
+   "description": "computed-goto state machine through a jump table (hub)",
+   "payload_instructions": 25,
+   "verified_pairs": 23,
+   "blocks": 9,
+   "hub_sites": 1,
+   "x86": {
+    "exit": 60,
+    "stdout_hex": "3c00000000000000"
+   },
+   "arm": {
+    "exit": 60,
+    "stdout_hex": "3c00000000000000"
+   },
+   "stdout_equal": true,
+   "exit_code_equal_or_expected": true,
+   "hub": {
+    "hits": 16,
+    "hubwalk": 24,
+    "walk_avg": 1.5
+   },
+   "status": "OK"
+  },
+  {
+   "program": "funcptr_miss",
+   "description": "negative: corrupted table entry must hit the guard fallback",
+   "payload_instructions": 22,
+   "verified_pairs": 16,
+   "blocks": 9,
+   "hub_sites": 1,
+   "x86": {
+    "exit": 0,
+    "stdout_hex": "4000000000000000"
+   },
+   "arm": {
+    "exit": 127,
+    "stdout_hex": ""
+   },
+   "stdout_equal": null,
+   "exit_code_equal_or_expected": true,
+   "hub": {
+    "hits": null,
+    "hubwalk": null
+   },
+   "status": "OK"
+  }
+ ],
+ "all_pass": true
+}
