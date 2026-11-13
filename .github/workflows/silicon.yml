@@ -13,19 +13,31 @@ jobs:
           uname -m
           lscpu | sed -n '1,5p;9,12p'
 
-      - name: Install qemu-user
+      - name: Install qemu-user and x86-64 runtime libs
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq qemu-user
+          sudo apt-get install -y -qq qemu-user libc6-amd64-cross
           qemu-x86_64 --version | head -1
 
-      - name: Run silicon pilot
+      - name: Run silicon pilot (startup-dominated pilots, 5 reps)
         run: python3 progtest/silicon_pilot.py
 
-      - name: Show result
+      - name: Show pilot result
         run: cat results/silicon_pilot.json
+
+      - name: Run silicon scaled (bench workloads, 30 reps)
+        run: python3 progtest/silicon_scaled.py
+
+      - name: Show scaled result
+        run: cat results/silicon_scaled.json
+
+      - name: Run silicon delivery (gzip/cat whole binaries)
+        run: python3 progtest/silicon_delivery.py
+
+      - name: Show delivery result
+        run: cat results/silicon_delivery.json
 
       - uses: actions/upload-artifact@v4
         with:
-          name: silicon_pilot_json
-          path: results/silicon_pilot.json
+          name: silicon_results
+          path: results/silicon_*.json
