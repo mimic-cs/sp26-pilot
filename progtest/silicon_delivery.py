@@ -25,9 +25,10 @@ Assets per tool (delivery/<tool>/):
                   translates instructions only, not the target libc.
 
 Inputs are generated deterministically by this script (no external
-fixtures); every input gets mtime 0 via os.utime so gzip's header
-stores a reproducible timestamp, and both configurations receive the
-same argv. Gate per case: stdout byte-exact and exit codes equal
+fixtures); every input gets a fixed in-range mtime (2000-01-01) via
+os.utime so gzip's header stores a reproducible timestamp without
+triggering gzip's out-of-range warning, and both configurations
+receive the same argv. Gate per case: stdout byte-exact and exit codes equal
 across the two configurations; stderr is recorded for the error
 cases. Cases per tool: five real inputs plus one missing-file error
 case (exit != 0, empty stdout); cat additionally concatenates two
@@ -123,7 +124,7 @@ def main():
         p = os.path.join(wd, name)
         with open(p, "wb") as fh:
             fh.write(data)
-        os.utime(p, (0, 0))
+        os.utime(p, (946684800, 946684800))
     report = {}
     all_pass = True
     for tool, (casar, orig) in sorted(tools.items()):
