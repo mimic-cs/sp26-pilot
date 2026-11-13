@@ -103,7 +103,7 @@ def main():
     wd = tempfile.mkdtemp(prefix="silideli_")
     tools = {}
     for tool, sha in EXPECTED_SHA.items():
-        d = os.path.join(HERE, "delivery", tool)
+        d = os.path.join(ROOT, "delivery", tool)
         casar = os.path.join(d, "casar.aarch64")
         orig = os.path.join(d, "orig.x86")
         if not (os.path.exists(casar) and os.path.exists(orig)):
